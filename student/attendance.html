@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance</title>
+    <link rel="stylesheet" href="attendance.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="logo">
+            <h2>My School</h2>
+        </div>
+        <ul class="menu">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <!-- <li><a href="courses.html">My Courses</a></li> -->
+            <!-- <li><a href="assignments.html">Assignments</a></li> -->
+            <li><a href="grades.html">Grades</a></li>
+            <li><a href="attendance.html" class="active">Attendance</a></li> <!-- Active link for Attendance -->
+            <li><a href="timetable.html">Timetable</a></li>
+            <!-- <li><a href="messages.html">Messages</a></li> -->
+            <li><a href="announcements.html">Announcements</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header class="header">
+            <div class="greeting">Attendance</div>
+            <div class="user-profile">
+                <img src="profile.jpg" alt="Profile" class="profile-img">
+                <span class="notification-icon">🔔</span>
+            </div>
+        </header>
+
+        <!-- Attendance Section -->
+        <section class="attendance-section">
+            <h2>Attendance Record</h2>
+
+            <!-- Attendance Percentage Section -->
+            <div class="attendance-percentage">
+                <h3>Current Semester Attendance: <span id="attendancePercentage">0%</span></h3>
+            </div>
+
+            <table class="attendance-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Subject</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="attendanceData">
+                    <tr>
+                        <td>Oct 1, 2024</td>
+                        <td>Mathematics</td>
+                        <td class="present">Present</td>
+                    </tr>
+                    <tr>
+                        <td>Oct 2, 2024</td>
+                        <td>Science</td>
+                        <td class="absent">Absent</td>
+                    </tr>
+                    <tr>
+                        <td>Oct 3, 2024</td>
+                        <td>English</td>
+                        <td class="present">Present</td>
+                    </tr>
+                    <tr>
+                        <td>Oct 4, 2024</td>
+                        <td>History</td>
+                        <td class="present">Present</td>
+                    </tr>
+                    <tr>
+                        <td>Oct 5, 2024</td>
+                        <td>Geography</td>
+                        <td class="present">Present</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <!-- JavaScript to Calculate Attendance Percentage -->
+    <script>
+        function calculateAttendancePercentage() {
+            const attendanceRows = document.querySelectorAll('#attendanceData tr');
+            let totalClasses = attendanceRows.length;
+            let classesAttended = 0;
+
+            attendanceRows.forEach(row => {
+                const statusCell = row.querySelector('td:nth-child(3)').innerText.trim();
+                if (statusCell === 'Present') {
+                    classesAttended++;
+                }
+            });
+
+            let attendancePercentage = (classesAttended / totalClasses) * 100;
+            document.getElementById('attendancePercentage').innerText = attendancePercentage.toFixed(2) + '%';
+        }
+
+        // Calculate attendance percentage on page load
+        window.onload = calculateAttendancePercentage;
+    </script>
+</body>
+</html>

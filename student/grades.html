@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grades</title>
+    <link rel="stylesheet" href="grades.css"> <!-- Link to the CSS file -->
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="logo">
+            <h2>My School</h2>
+        </div>
+        <ul class="menu">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <!-- <li><a href="courses.html">My Courses</a></li> -->
+            <!-- <li><a href="assignments.html">Assignments</a></li> -->
+            <li><a href="grades.html" class="active">Grades</a></li> <!-- Active link for Grades -->
+            <li><a href="attendance.html">Attendance</a></li>
+            <li><a href="timetable.html">Timetable</a></li>
+            <!-- <li><a href="messages.html">Messages</a></li> -->
+            <li><a href="announcements.html">Announcements</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header class="header">
+            <div class="greeting">Grades</div>
+            <div class="user-profile">
+                <img src="profile.jpg" alt="Profile" class="profile-img">
+                <span class="notification-icon">🔔</span>
+            </div>
+        </header>
+
+        <!-- Grades Section -->
+        <section class="grades-section">
+            <h2>My Grades</h2>
+
+            <table class="grades-table">
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody id="gradesData">
+                    <!-- Grades will be inserted here by JavaScript -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script src="grades.js"></script>
+</body>
+</html>

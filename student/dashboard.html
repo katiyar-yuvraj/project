@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="dashboard.js" defer></script>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="logo">
+            <h2>My School</h2>
+        </div>
+        <ul class="menu">
+            <li><a href="dashboard.html" class="active">Dashboard</a></li>
+            <!-- <li><a href="courses.html">My Courses</a></li> -->
+            <!-- <li><a href="assignments.html">Assignments</a></li> -->
+            <li><a href="grades.html">Grades</a></li>
+            <li><a href="attendance.html">Attendance</a></li>
+            <li><a href="timetable.html">Timetable</a></li>
+            <!-- <li><a href="messages.html">Messages</a></li> -->
+            <li><a href="announcements.html">Announcements</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header class="header">
+            <div class="greeting">Welcome, <span>Student Name</span></div>
+            <div class="user-profile">
+                <img src="profile.jpg" alt="Profile" class="profile-img">
+                <span class="notification-icon">🔔</span>
+            </div>
+        </header>
+
+        <!-- Key Metrics -->
+        <section class="dashboard-overview">
+            <div class="card">
+                <h3>Today's Classes</h3>
+                <p>2 Classes Scheduled</p>
+            </div>
+            <div class="card">
+                <h3>Pending Assignments</h3>
+                <p>3 Assignments Due</p>
+            </div>
+            <div class="card">
+                <h3>Next Exam Date</h3>
+                <p>October 15, 2024</p>
+            </div>
+            <div class="card">
+                <h3>Attendance Overview</h3>
+                <p>attendance: <span id="attendanceDisplay">Loading...</span></p>
+            </div>
+        </section>
+
+        <!-- Recent Grades -->
+        <section class="recent-grades">
+            <h2>Recent Grades</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Math</td>
+                        <td>A</td>
+                    </tr>
+                    <tr>
+                        <td>Science</td>
+                        <td>B+</td>
+                    </tr>
+                    <tr>
+                        <td>History</td>
+                        <td>A-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</body>
+</html>
