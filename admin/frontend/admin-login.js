@@ -1,37 +1,38 @@
-document.getElementById('adminLoginForm').addEventListener('submit', function(event) {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const errorMessage = document.getElementById('error-message');
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("adminLoginForm");
+  if (form) {
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
-    // Clear any previous error messages
-    errorMessage.textContent = '';
+      try {
+        // Send a POST request with Fetch API
+        const response = await fetch("http://localhost:3000/user/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        });
 
-    // Basic Validation
-    if (!email || !password) {
-        event.preventDefault();  // Stop form submission
-        errorMessage.textContent = 'Both fields are required.';
-        return;
-    }
+        if (!response.ok) {
+          throw new Error(
+            `Login failed: ${response.status} ${response.statusText}`
+          );
+        }
 
-    // Simple email format validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        event.preventDefault();  // Stop form submission
-        errorMessage.textContent = 'Invalid email format.';
-        return;
-    }
+        const data = await response.json(); // Assuming server responds with JSON
+        console.log("Response from server:", data);
 
-    // If all validations pass, allow form submission
-    try {
-        alert('Login Successful!');
-        const res = fetch("http://localhost:3000/user/login",{
-            method: "POST",
-            body: JSON.stringify({email, password}),
-        })
-        if (!res.ok) {
-            throw new Error(`Response status: ${response.status}`);
-          }
-    } catch (error) {
-        window.alert(error.message);
-    }
+        // Display success message or redirect
+        alert("Login Successful!");
+        window.location.href = "http://localhost:3000/";
+      } catch (error) {
+        alert(`Error: ${error.message}`);
+      }
+    });
+  } else {
+    console.error("Form element with ID 'loginForm' not found.");
+  }
 });
