@@ -5,7 +5,21 @@ document.addEventListener("DOMContentLoaded", () => {
       event.preventDefault();
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
+     // Basic Validation
+     if (!email || !password) {
+        event.preventDefault();  // Stop form submission
+        errorMessage.textContent = 'Both fields are required.';
+        return;
+    }
 
+    // Simple email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        event.preventDefault();  // Stop form submission
+        errorMessage.textContent = 'Invalid email format.';
+        return;
+    }
+    
       try {
         // Send a POST request with Fetch API
         const response = await fetch("http://localhost:3000/user/login", {
