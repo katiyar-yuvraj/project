@@ -25,7 +25,7 @@ const userSchema = new Schema(
     role: {
         type: String,
         enum: ["student", "admin", "guest"], // Limit role options
-        default: "student", // Default to 'student' if no role is specified
+        default: "guest", // Default to ' if no role is specified
       },
       profileImg:String
   },
