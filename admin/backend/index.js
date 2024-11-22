@@ -1,9 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const { userRoutes, studentRouter, attendanceRoutes } = require("./routes");
+const { userRoutes, studentRouter, attendanceRoutes } = require("./routes/index.js");
 
-const connect = require("./db.js");
+const connect = require("./conf/db.js");
 
 dotenv.config();
 
@@ -18,11 +18,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.use('/api/admin', adminRoutes);
 
 const PORT = process.env.APP_PORT || 3000;
 
-app.use("/student", userRoutes);
+app.use("/user", userRoutes);
 app.use("/student", studentRouter);
 app.use("/attendance", attendanceRoutes);
 

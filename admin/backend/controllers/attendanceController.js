@@ -77,3 +77,17 @@ exports.deleteAttendance = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.getCourceAttendance = async (req, res) => {
+  try {
+    const { course: courseName } = req.params;
+        
+    const attendance = await Attendance.find({subject: courseName }).populate('studentId', 'name rollNumber');
+    if (!attendance.length) {
+      return res.status(404).json({ message: 'No attendance records found for this course' });
+    }
+    res.status(200).json(attendance);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
