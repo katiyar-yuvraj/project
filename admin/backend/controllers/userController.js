@@ -3,7 +3,7 @@ const User = require("../models/User");
 // Create a new user (Register)
 exports.createUser = async (req, res) => {
   try {
-    const { name, email, password, role } = await JSON.parse(req.body);
+    const { name, email, password, role } = await req.body;
     console.log(name, email, password, role);
 
     if (!name || !email || !password || !role) {
@@ -49,7 +49,7 @@ exports.getUserById = async (req, res) => {
 // Update user by ID
 exports.updateUser = async (req, res) => {
   try {
-    const { name, email, role } = await JSON.parse(req.body);
+    const { name, email, role } = await req.body;
     const user = await User.findByIdAndUpdate(
       req.params.id,
       { name, email, role },
@@ -86,7 +86,7 @@ exports.addProfileImg = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    const { img } = await JSON.parse(req.body);
+    const { img } = await req.body;
     user.profileImg = img;
     await user.save();
     res.status(200).json({ message: "User profile updated successfully" });
@@ -97,8 +97,8 @@ exports.addProfileImg = async (req, res) => {
 
 // User login
 exports.loginUser = async (req, res) => {
-  try {
-    const { email, password } = await JSON.parse(req.body);
+  try {  
+    const { email, password } = await req.body;
     const user = await User.findOne({ email }).select("+password");
     if (!user || !(await user.comparePassword(password))) {
       return res.status(401).json({ message: "Invalid email or password" });
