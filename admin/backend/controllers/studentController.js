@@ -4,7 +4,7 @@ const User = require('../models/User');
 // Create a new student
 exports.createStudent = async (req, res) => {
   try {
-    const { userId, rollNumber, class: studentClass, course } = req.body;
+    const { userId, rollNumber, class: studentClass, course } = await JSON(req.body);
 
     // Check if user exists
     const user = await User.findById(userId);
@@ -54,7 +54,7 @@ exports.getStudentById = async (req, res) => {
 // Update student by ID
 exports.updateStudent = async (req, res) => {
   try {
-    const { rollNumber, class: studentClass, exams } = req.body;
+    const { rollNumber, class: studentClass, exams } = await JSON(req.body);
 
     const student = await Student.findByIdAndUpdate(
       req.params.id,

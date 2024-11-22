@@ -7,7 +7,7 @@ const connect = async () => {
       `success connect to db ${db.connection.host} ${db.connection.port}`
     );
   } catch (error) {
-   console.log("unable to connect to server in connect", error.message);
+   console.log("unable to connect to server : ", error.message);
    throw error;
   }
 };

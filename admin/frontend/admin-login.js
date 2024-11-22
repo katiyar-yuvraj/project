@@ -22,5 +22,16 @@ document.getElementById('adminLoginForm').addEventListener('submit', function(ev
     }
 
     // If all validations pass, allow form submission
-    alert('Login Successful!');
+    try {
+        alert('Login Successful!');
+        const res = fetch("http://localhost:3000/user/login",{
+            method: "POST",
+            body: JSON.stringify({email, password}),
+        })
+        if (!res.ok) {
+            throw new Error(`Response status: ${response.status}`);
+          }
+    } catch (error) {
+        window.alert(error.message);
+    }
 });

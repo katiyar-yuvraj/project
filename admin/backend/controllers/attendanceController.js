@@ -4,7 +4,7 @@ const Student = require('../models/Student');
 // Create a new attendance record
 exports.createAttendance = async (req, res) => {
   try {
-    const { studentId, date, status, subject } = req.body;
+    const { studentId, date, status, subject } = await JSON(req.body);
 
     // Check if student exists
     const student = await Student.findById(studentId);
@@ -49,7 +49,7 @@ exports.getAttendanceByStudentId = async (req, res) => {
 // Update an attendance record by ID
 exports.updateAttendance = async (req, res) => {
   try {
-    const { status, subject } = req.body;
+    const { status, subject } = await JSON(req.body);
     const attendance = await Attendance.findByIdAndUpdate(
       req.params.id,
       { status, subject },
