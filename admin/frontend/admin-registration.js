@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Response from server:", data);
 
         // Display success message or redirect
-        alert("Login Successful!");
+        alert("Registration Successful!");
         window.location.href = "/";
       } catch (error) {
         alert(`Error: ${error.message}`);
