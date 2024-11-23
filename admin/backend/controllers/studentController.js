@@ -31,7 +31,7 @@ exports.createStudent = async (req, res) => {
 // Get all students
 exports.getAllStudents = async (req, res) => {
   try {
-    const students = await Student.find().populate('userId', 'name email');
+    const students = await Student.find().populate('userId', 'name email profileImg');
     res.status(200).json(students);
   } catch (error) {
     res.status(500).json({ error: error.message });
