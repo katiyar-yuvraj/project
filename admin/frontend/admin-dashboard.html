@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="admin-dashboard.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="logo">
+            <h2>Admin Panel</h2>
+        </div>
+        <ul class="menu">
+            <li><a href="#" onclick="showSection('studentsSection')">Manage Students</a></li>
+            <li><a href="#" onclick="showSection('attendanceSection')">Mark Attendance</a></li>
+            <li><a href="#" onclick="showSection('gradesSection')">Set Grades</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header class="header">
+            <h2>Admin Dashboard</h2>
+        </header>
+
+        <!-- Manage Students Section -->
+        <section id="studentsSection" class="content-section">
+            <h3>Manage Students</h3>
+        
+            <!-- Menu for Student Actions -->
+            <div class="student-actions">
+                <button onclick="showStudentAction('addStudentForm')">Add New Student</button>
+                <button onclick="showStudentAction('updateStudentForm')">Update Student Data</button>
+                <button onclick="showStudentAction('deleteStudentForm')">Delete Student</button>
+            </div>
+        
+            <!-- Add Student Form -->
+            <div id="addStudentForm" class="action-form" style="display: none;">
+                <h4>Add New Student</h4>
+                <form id="addStudent">
+                    <label for="addStudentName">Name:</label>
+                    <input type="text" id="addStudentName" required>
+                    <label for="addStudentEmail">Email:</label>
+                    <input type="email" id="addStudentEmail" required>
+                    <label for="addStudentRoll">Roll No:</label>
+                    <input type="text" id="addStudentRoll" required>
+                    <label for="addStudentCourse">Course:</label>
+                    <input type="text" id="addStudentCourse" required>
+                    <label for="addStudentDept">Department:</label>
+                    <input type="text" id="addStudentDept" required>
+                    <label for="addStudentPassword">Password:</label>
+                    <input type="password" id="addStudentPassword" required>
+                    <button type="button" onclick="addStudent()">Submit</button>
+                </form>
+            </div>
+        
+            <!-- Update Student Form -->
+            <div id="updateStudentForm" class="action-form" style="display: none;">
+                <h4>Update Student Data</h4>
+                <form id="updateStudent">
+                    <label for="updateStudentRoll">Roll No:</label>
+                    <input type="text" id="updateStudentRoll" required>
+                    <label for="updateStudentName">New Name:</label>
+                    <input type="text" id="updateStudentName">
+                    <label for="updateStudentEmail">New Email:</label>
+                    <input type="email" id="updateStudentEmail">
+                    <label for="updateStudentCourse">New Course:</label>
+                    <input type="text" id="updateStudentCourse">
+                    <label for="updateStudentDept">New Department:</label>
+                    <input type="text" id="updateStudentDept">
+                    <label for="updateStudentPassword">New Password:</label>
+                    <input type="password" id="updateStudentPassword">
+                    <button type="button" onclick="updateStudent()">Submit</button>
+                </form>
+            </div>
+        
+            <!-- Delete Student Form -->
+            <div id="deleteStudentForm" class="action-form" style="display: none;">
+                <h4>Delete Student</h4>
+                <form id="deleteStudent">
+                    <label for="deleteStudentRoll">Roll No:</label>
+                    <input type="text" id="deleteStudentRoll" required>
+                    <button type="button" onclick="deleteStudent()">Submit</button>
+                </form>
+            </div>
+        
+            <!-- Students Table -->
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Roll No</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Course</th>
+                        <th>Department</th>
+                    </tr>
+                </thead>
+                <tbody id="studentsData">
+                    <!-- Student data will be dynamically loaded here -->
+                </tbody>
+            </table>
+        </section>
+        
+
+        <!-- Placeholder for other sections -->
+        <section id="attendanceSection" class="content-section" style="display: none;">
+            <h3>Mark Attendance</h3>
+            <!-- Attendance content will go here -->
+        </section>
+
+        <section id="gradesSection" class="content-section" style="display: none;">
+            <h3>Set Grades</h3>
+            <!-- Grades content will go here -->
+        </section>
+    </div>
+
+    <script src="admin-dashboard.js"></script>
+</body>
+</html>
