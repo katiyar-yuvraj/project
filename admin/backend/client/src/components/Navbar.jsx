@@ -52,7 +52,7 @@ const Navbar = () => {
         </li>
         <li className="mb-5">
           <Link
-            to="/dashboard/attendance"
+            to="/dashboard/timetable"
             className="block px-6 py-3 text-lg hover:bg-blue-800 active:bg-blue-900 rounded-lg"
           >
             Timetable

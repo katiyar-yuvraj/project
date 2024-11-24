@@ -8,6 +8,7 @@ import Dashboard from "./components/Dashboard";
 import Attendance from "./components/Attendance";
 import Grades from "./components/Grades";
 import Announcements from "./components/Announcements";
+import TimeTable from "./components/Timetable";
 
 
 const DashboardLayout = () => {
@@ -41,6 +42,7 @@ function App() {
               <Route path="attendance" element={<Attendance />} />
               <Route path="grades" element={<Grades />} />
               <Route path="announcements" element={<Announcements />} />
+              <Route path="timetable" element={<TimeTable />} />
             </Route>
           </Routes>
         </div>
