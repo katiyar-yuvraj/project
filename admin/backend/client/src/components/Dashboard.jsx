@@ -1,11 +1,10 @@
 import React, { useContext } from "react";
 import StudentContext from "../context/StudentContext";
-import { Outlet, Link } from "react-router-dom";
 
 export default function Dashboard() {
   const { User } = useContext(StudentContext);
-    console.log(User);
     // TODO:using useEffect have to set context 
+
   return (
     1 && (
       <>
@@ -27,13 +26,12 @@ export default function Dashboard() {
             </header>
 
             {/* Dashboard Overview */}
-            <Outlet />
             <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
               <div className="bg-white shadow rounded p-4 text-center">
                 <h3 className="text-blue-700 text-lg font-semibold mb-2">
                   Today's Classes
                 </h3>
-                <p className="text-gray-700">2 Classes Scheduled</p>
+                <p className="text-gray-700">3 Classes Scheduled</p>
               </div>
               <div className="bg-white shadow rounded p-4 text-center">
                 <h3 className="text-blue-700 text-lg font-semibold mb-2">
