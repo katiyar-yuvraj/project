@@ -1,9 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Grades = () => {
+  const [grades, setGrades] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulating fetching grades data
+    const fetchGrades = async () => {
+      try {
+        const fetchedGrades = await Promise.resolve([
+          { subject: 'Mathematics', grade: 'A', gradeColor: 'text-green-600' },
+          { subject: 'Science', grade: 'B+', gradeColor: 'text-blue-600' },
+          { subject: 'History', grade: 'A-', gradeColor: 'text-red-600' },
+        ]);
+        setGrades(fetchedGrades);
+        setLoading(false);
+      } catch (error) {
+        console.error('Failed to fetch grades:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchGrades();
+  }, []);
+
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar or Navigation (if required) */}
+      {/* Main Content */}
       <div className="ml-64 w-full p-6">
         {/* Header */}
         <header className="bg-white shadow rounded mb-6 flex justify-between items-center p-4">
@@ -30,20 +53,23 @@ const Grades = () => {
                 <th className="p-4 text-left text-lg">Grade</th>
               </tr>
             </thead>
-            <tbody id="gradesData">
-              {/* Placeholder rows; replace with dynamic data */}
-              <tr className="border-b">
-                <td className="p-4 text-gray-700">Mathematics</td>
-                <td className="p-4 font-semibold text-green-600">A</td>
-              </tr>
-              <tr className="border-b">
-                <td className="p-4 text-gray-700">Science</td>
-                <td className="p-4 font-semibold text-blue-600">B+</td>
-              </tr>
-              <tr>
-                <td className="p-4 text-gray-700">History</td>
-                <td className="p-4 font-semibold text-red-600">A-</td>
-              </tr>
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td colSpan="2" className="p-4 text-center text-gray-700">
+                    Loading grades...
+                  </td>
+                </tr>
+              ) : (
+                grades.map((grade, index) => (
+                  <tr key={index} className="border-b">
+                    <td className="p-4 text-gray-700">{grade.subject}</td>
+                    <td className={`p-4 font-semibold ${grade.gradeColor}`}>
+                      {grade.grade}
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </section>
