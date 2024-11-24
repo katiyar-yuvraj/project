@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Outlet } from "react-router-dom";
 
 const Navbar = () => {
   return (
@@ -37,7 +36,7 @@ const Navbar = () => {
         </li> */}
         <li className="mb-5">
           <Link
-            to="/grades"
+            to="/dashboard/grades"
             className="block px-6 py-3 text-lg hover:bg-blue-800 active:bg-blue-900 rounded-lg"
           >
             Grades
@@ -53,7 +52,7 @@ const Navbar = () => {
         </li>
         <li className="mb-5">
           <Link
-            to="/timetable"
+            to="/dashboard/attendance"
             className="block px-6 py-3 text-lg hover:bg-blue-800 active:bg-blue-900 rounded-lg"
           >
             Timetable
@@ -69,7 +68,7 @@ const Navbar = () => {
         </li> */}
         <li className="mb-5">
           <Link
-            to="/announcements"
+            to="/dashboard/announcements"
             className="block px-6 py-3 text-lg hover:bg-blue-800 active:bg-blue-900 rounded-lg"
           >
             Announcements
@@ -77,7 +76,6 @@ const Navbar = () => {
         </li>
       </ul>
     </nav>
-     <Outlet /> 
      </>
   );
 };
