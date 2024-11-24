@@ -30,10 +30,8 @@ const StudentLogin = () => {
 
     try {
       // Send a POST request with Fetch API
-      console.log(`${import.meta.env.VITE_HOST_URL}/user/login`);
-      
       const response = await fetch(
-        `${import.meta.env.VITE_HOST_URL}/user/login`,
+        `${import.meta.env.VITE_HOST_URL}/student/login`,
         {
           method: "POST",
           headers: {
@@ -51,17 +49,19 @@ const StudentLogin = () => {
 
       const data = await response.json(); // Assuming server responds with JSON
       uId = data.user._id;
-
+      console.log(uId);
+      
       console.log("Response from server:", data);
 
       // Display success message or redirect
-      alert("Login Successful!");
+      // alert("Login Successful!");
     } catch (error) {
       setErrorMessage(`Error: ${error.message}`);
+      return;
     }
 
     try {
-      const apiUrl = `/api/student/${uId}`;
+      const apiUrl = `${import.meta.env.VITE_HOST_URL}/student/info/${uId}`;
       const res = await fetch(apiUrl);
 
       if (!res.ok) {
@@ -72,9 +72,11 @@ const StudentLogin = () => {
       const data = await res.json();
 
       setUser(data);
+      localStorage.setItem("user", JSON.stringify(data));
       navigate("/dashboard");
     } catch (error) {
       console.log("unable to maintain context: ", error.message);
+      return;
     }
   };
 
