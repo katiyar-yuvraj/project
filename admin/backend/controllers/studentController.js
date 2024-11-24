@@ -50,6 +50,18 @@ exports.getStudentById = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+// Get student by roll number
+exports.getStudentByRoll = async (req, res) => {
+  try {
+    const student = await Student.findOne(req.params.id).populate('userId', 'name email');
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+    res.status(200).json(student);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 // Update student by ID
 exports.updateStudent = async (req, res) => {
