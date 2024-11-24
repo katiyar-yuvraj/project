@@ -30,6 +30,8 @@ const StudentLogin = () => {
 
     try {
       // Send a POST request with Fetch API
+      console.log(`${import.meta.env.VITE_HOST_URL}/user/login`);
+      
       const response = await fetch(
         `${import.meta.env.VITE_HOST_URL}/user/login`,
         {
