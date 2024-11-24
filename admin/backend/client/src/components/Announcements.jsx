@@ -1,9 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Announcements = () => {
+  const [announcements, setAnnouncements] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Function to calculate the date 12 days from today
+  const getDateDaysAhead = (num) => {
+    const today = new Date();
+    today.setDate(today.getDate() + num);
+    return today.toLocaleDateString(); // Return the date in a readable format
+  };
+
+  useEffect(() => {
+    // Simulate fetching announcements data
+    const fetchAnnouncements = async () => {
+      try {
+        // Simulate fetching data from an API or database
+        const data = await Promise.resolve([
+          { 
+            id: 1, 
+            title: 'New Assignment Due', 
+            message: `Your next assignment is due by ${getDateDaysAhead(15)}.`
+          },
+          { 
+            id: 2, 
+            title: 'Class Canceled', 
+            message: `The class on ${getDateDaysAhead(20)} has been canceled.`
+          }
+        ]);
+        
+        setAnnouncements(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching announcements:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchAnnouncements();
+  }, []);
+
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar or Navigation (if applicable) */}
+      {/* Main Content */}
       <div className="ml-64 w-full p-6">
         {/* Header */}
         <header className="bg-white shadow rounded mb-6 flex justify-between items-center p-4">
@@ -19,15 +58,22 @@ const Announcements = () => {
         </header>
 
         {/* Announcements Section */}
-        <section className="bg-white shadow rounded p-6 text-center">
-          <div className="announcement-message">
-            <h3 className="text-2xl font-bold text-blue-700 mb-4">
-              No New Announcements
-            </h3>
-            <p className="text-gray-700">
-              Stay tuned! Any new announcements will appear here.
-            </p>
-          </div>
+        <section className="bg-white shadow rounded p-6">
+          {loading ? (
+            <div className="text-center text-gray-700">Loading announcements...</div>
+          ) : announcements.length === 0 ? (
+            <div className="text-center">
+              <h3 className="text-2xl font-bold text-blue-700 mb-4">No New Announcements</h3>
+              <p className="text-gray-700">Stay tuned! Any new announcements will appear here.</p>
+            </div>
+          ) : (
+            announcements.map((announcement) => (
+              <div key={announcement.id} className="announcement-message mb-6">
+                <h3 className="text-2xl font-bold text-blue-700 mb-4">{announcement.title}</h3>
+                <p className="text-gray-700">{announcement.message}</p>
+              </div>
+            ))
+          )}
         </section>
       </div>
     </div>
