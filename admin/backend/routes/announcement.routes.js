@@ -1,18 +1,23 @@
 const express = require('express');
-const { model } = require('mongoose');
 
 const router = express.Router();
 
+//  Function to calculate the date 12 days from today
+  const getDateDaysAhead = (num) => {
+    const today = new Date();
+    today.setDate(today.getDate() + num);
+    return today.toLocaleDateString(); // Return the date in a readable format
+  };
 const notifications = [
     {
       id: 1,
       title: 'New Assignment Due',
-      message: `Your next assignment for ${courseName} is due by ${getDateDaysAhead(15)}.`,
+      message: `Your next assignment for Mathematics is due by ${getDateDaysAhead(15)}.`,
     },
     {
       id: 2,
       title: 'Class Canceled',
-      message: `The class for ${courseName} on ${getDateDaysAhead(20)} has been canceled.`,
+      message: `The class for Digital Electronics on ${getDateDaysAhead(20)} has been canceled.`,
     },
   ];
 
@@ -28,4 +33,4 @@ router.post('/', (req, res) => {
     res.status(201).json(newNotification);
 });
 
-model.exports = router;
+module.exports = router;
