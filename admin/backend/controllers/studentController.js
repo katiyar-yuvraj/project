@@ -163,3 +163,43 @@ exports.loginStudent = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.markGrade = async (req, res) => {
+  const { rollNumber } = req.params;
+  const { subject, marks, maxMarks } = req.body;
+
+  // Validate required fields
+  if (!subject || marks === undefined || maxMarks === undefined) {
+    return res.status(400).json({ message: "Subject, marks, and maxMarks are required." });
+  }
+
+  try {
+    // Find student by roll number
+    const student = await Student.findOne({ rollNumber });
+    if (!student) {
+      return res.status(404).json({ message: "Student not found." });
+    }
+
+    // Check if the subject already exists in exams
+    const existingExam = student.exams.find((exam) => exam.subject === subject);
+
+    if (existingExam) {
+      // Update the existing subject's marks
+      existingExam.marks = marks;
+      existingExam.maxMarks = maxMarks;
+    } else {
+      // Add new subject with marks
+      student.exams.push({ subject, marks, maxMarks });
+    }
+
+    // Save the updated student record
+    await student.save();
+
+    res.status(200).json({
+      message: "Grade marked successfully.",
+      exams: student.exams,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to mark grade.", error: error.message });
+  }
+};
