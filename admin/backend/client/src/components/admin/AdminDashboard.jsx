@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 const AdminDashboard = () => {
   const [visibleForm, setVisibleForm] = useState(null);
   const [updateStudentData, setUpdateStudentData] = useState({
+    _id: null,
     roll: "",
     name: "",
     email: "",
@@ -10,6 +11,19 @@ const AdminDashboard = () => {
     department: "",
     password: "",
   });
+
+  const convertGradeToMarks = (grade) => {
+    const gradeToMarks = {
+      A: 90,
+      B: 80,
+      C: 70,
+      D: 60,
+      E: 50,
+      F: 40,
+    };
+    return gradeToMarks[grade] || 0;
+  };
+
   const [rollNumber, setRollNumber] = useState("");
   const subjects = [
     { subject: "Mathematics", id: "attendanceMath" },
@@ -25,19 +39,28 @@ const AdminDashboard = () => {
   };
 
   const fetchDummyStudentData = async (roll) => {
-    // Simulate a dummy API request with a setTimeout
-    return new Promise((resolve) =>
-      setTimeout(() => {
-        resolve({
-          roll: roll,
-          name: "John Doe",
-          email: "johndoe@example.com",
-          course: "Physics",
-          department: "Science",
-          password: "dummyPassword",
-        });
-      }, 1000)
-    );
+    try {
+      const apiUrl = `${import.meta.env.VITE_HOST_URL}/student/roll/${roll}`;
+      const res = await fetch(apiUrl);
+
+      if (!res.ok) {
+        throw new Error(`Login failed: ${res.status} ${res.statusText}`);
+      }
+      const data = await res.json();
+
+      const dummy = {
+        _id: data._id,
+        roll: roll,
+        name: "John Doe",
+        email: "johndoe@example.com",
+        course: "Btech",
+        department: "CSE",
+        password: "dummyPassword",
+      };
+      return { ...dummy, ...data };
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleRollNumberChange = (e) => {
@@ -56,34 +79,144 @@ const AdminDashboard = () => {
     const { name, value } = e.target;
     setUpdateStudentData((prev) => ({ ...prev, [name]: value }));
   };
-
+  // done
   const handelmarkAttendence = async () => {
     if (rollNumber) {
-      const studentData = await fetchDummyStudentData(rollNumber);
-      setUpdateStudentData(studentData);
+      // Extract form values
+      const rollNo = rollNumber;
+      const name = document.getElementById("attendanceName").value;
+      const department = document.getElementById("attendanceDepartment").value;
+      const date = document.getElementById("attendanceDate").value;
+      const subjectId = document.getElementById("attendanceSubject1").value;
+      const status = document.getElementById("attendeResult").value;
+
+      // Validate required fields
+      if (!name || !department || !date || !subjectId || !status) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      // Construct request body
+      const requestBody = {
+        subjectId,
+        date,
+        status,
+      };
+
+      try {
+        // Send request to the API
+        const response = await fetch(
+          `${import.meta.env.VITE_HOST_URL}/attendance/${rollNo}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
+          }
+        );
+
+        // Handle the response
+        if (response.ok) {
+          const data = await response.json();
+          alert("Attendance submitted successfully.");
+          console.log("Response Data:", data);
+        } else {
+          const errorData = await response.json();
+          alert(`Error: ${errorData.message}`);
+        }
+      } catch (error) {
+        console.error("Error submitting attendance:", error);
+        alert("Failed to submit attendance. Please try again.");
+      }
       showStudentAction("markAttendence");
     }
   };
 
   const handelmarkGrades = async () => {
-    if (rollNumber) {
-      const studentData = await fetchDummyStudentData(rollNumber);
-      setUpdateStudentData(studentData);
-      showStudentAction("markGrades");
+    // Ensure roll number is provided
+    if (!rollNumber) {
+      alert("Roll Number is required!");
+      return;
+    }
+
+    // Get the selected grade and subject from the form
+    const grade = document.getElementById("attendeResult").value;
+    const subjectID = document.getElementById("gradaeSubject").value;
+
+    try {
+      // Send a POST request to mark the grade
+      const response = await fetch(
+        `${import.meta.env.VITE_HOST_URL}/student/mark-grade/${rollNumber}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            subject: subjectID, // Pass the selected subject
+            marks: convertGradeToMarks(grade), // Convert grade to marks (e.g., A -> 90)
+            maxMarks: 100, // Assuming max marks are 100
+          }),
+        }
+      );
+
+      if (response.ok) {
+        alert("Grade marked successfully!");
+      } else {
+        const errorData = await response.json();
+        console.error("Error marking grades:", errorData);
+        alert("Failed to mark grades. Please try again.");
+      }
+    } catch (error) {
+      console.error("Network error:", error.message);
+      alert("An error occurred. Please try again later.");
     }
   };
+
+  // done
   const handeldeleteStudent = async () => {
     if (rollNumber) {
-      const studentData = await fetchDummyStudentData(rollNumber);
-      setUpdateStudentData(studentData);
+      try {
+        const studentData = await fetch(
+          `${import.meta.env.VITE_HOST_URL}/student/${rollNumber}`,
+          {
+            method: "DELETE",
+          }
+        );
+        setUpdateStudentData(null);
+      } catch (error) {
+        console.log(error);
+      }
       showStudentAction("deleteStudentForm");
     }
   };
+
+  // done
   const handelupdateStudent = async () => {
     if (rollNumber) {
-      const studentData = await fetchDummyStudentData(rollNumber);
-      setUpdateStudentData(studentData);
-      showStudentAction("updateStudentForm");
+      try {
+        const studentData = await fetch(
+          `${import.meta.env.VITE_HOST_URL}/student/${updateStudentData._id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updateStudentData),
+          }
+        );
+        if (!studentData.ok) {
+          throw new Error(
+            `Login failed: ${studentData.status} ${studentData.statusText}`
+          );
+        }
+        const data = await studentData.json();
+        setUpdateStudentData(data);
+        showStudentAction("updateStudentForm");
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -124,7 +257,7 @@ const AdminDashboard = () => {
           </button>
         </div>
 
-        {/* Menu for Student Actions */}
+        {/* Student Actions Menu */}
         <div className="flex gap-4 mb-6">
           <button
             onClick={() => showStudentAction("markAttendence")}
@@ -185,6 +318,23 @@ const AdminDashboard = () => {
                 <input
                   type="text"
                   id="attendanceDepartment"
+                  required
+                  className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  placeholder="Department Name"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="attendanceDate"
+                  className="block text-gray-600 mb-1"
+                >
+                  Date:
+                </label>
+                <input
+                  type="date"
+                  defaultValue={new Date().toISOString().split("T")[0]}
+                  id="attendanceDate"
                   required
                   className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
                   placeholder="Department Name"
