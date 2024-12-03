@@ -44,7 +44,7 @@ const AdminDashboard = () => {
       const res = await fetch(apiUrl);
 
       if (!res.ok) {
-        throw new Error(`Login failed: ${res.status} ${res.statusText}`);
+        throw new Error(`Responed failed: ${res.status} ${res.statusText}`);
       }
       const data = await res.json();
 
@@ -84,11 +84,11 @@ const AdminDashboard = () => {
     if (rollNumber) {
       // Extract form values
       const rollNo = rollNumber;
-      const name = document.getElementById("attendanceName").value;
-      const department = document.getElementById("attendanceDepartment").value;
-      const date = document.getElementById("attendanceDate").value;
-      const subjectId = document.getElementById("attendanceSubject1").value;
-      const status = document.getElementById("attendeResult").value;
+      const name = document.getElementById("attendanceName")?.value;
+      const department = document.getElementById("attendanceDepartment")?.value;
+      const date = document.getElementById("attendanceDate")?.value;
+      const subjectId = document.getElementById("attendanceSubject1")?.value;
+      const status = document.getElementById("attendeResult")?.value;
 
       // Validate required fields
       if (!name || !department || !date || !subjectId || !status) {
@@ -123,7 +123,7 @@ const AdminDashboard = () => {
           console.log("Response Data:", data);
         } else {
           const errorData = await response.json();
-          alert(`Error: ${errorData.message}`);
+          alert(`Error: ${errorData?.message}`);
         }
       } catch (error) {
         console.error("Error submitting attendance:", error);
@@ -169,7 +169,7 @@ const AdminDashboard = () => {
         alert("Failed to mark grades. Please try again.");
       }
     } catch (error) {
-      console.error("Network error:", error.message);
+      console.error("Network error:", error?.message);
       alert("An error occurred. Please try again later.");
     }
   };
@@ -197,7 +197,7 @@ const AdminDashboard = () => {
     if (rollNumber) {
       try {
         const studentData = await fetch(
-          `${import.meta.env.VITE_HOST_URL}/student/${updateStudentData._id}`,
+          `${import.meta.env.VITE_HOST_URL}/student/${updateStudentData?._id}`,
           {
             method: "PUT",
             headers: {
@@ -501,7 +501,7 @@ const AdminDashboard = () => {
                   type="text"
                   id="updateStudentRoll"
                   name="roll"
-                  value={updateStudentData.roll}
+                  value={updateStudentData?.roll }
                   onChange={handleInputChange}
                   required
                   className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-500"
@@ -518,7 +518,7 @@ const AdminDashboard = () => {
                   type="text"
                   id="updateStudentName"
                   name="name"
-                  value={updateStudentData.name}
+                  value={updateStudentData?.name}
                   onChange={handleInputChange}
                   className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-500"
                 />
@@ -534,7 +534,7 @@ const AdminDashboard = () => {
                   type="email"
                   id="updateStudentEmail"
                   name="email"
-                  value={updateStudentData.email}
+                  value={updateStudentData?.email}
                   onChange={handleInputChange}
                   className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-500"
                 />
@@ -551,7 +551,7 @@ const AdminDashboard = () => {
                   type="text"
                   id="updateStudentDept"
                   name="department"
-                  value={updateStudentData.department}
+                  value={updateStudentData?.department}
                   onChange={handleInputChange}
                   className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-500"
                 />
@@ -567,7 +567,7 @@ const AdminDashboard = () => {
                   type="password"
                   id="updateStudentPassword"
                   name="password"
-                  value={updateStudentData.password}
+                  value={updateStudentData?.password}
                   onChange={handleInputChange}
                   className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-500"
                 />
