@@ -7,6 +7,7 @@ const attendanceSchema = new Schema({
     ref: 'Student',
     required: true,
   },
+  subjectId: String,
   date: {
     type: Date,
     required: true,
@@ -14,7 +15,7 @@ const attendanceSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ['present', 'absent', 'late'],
+    enum: ['present', 'absent'],
     required: true,
   },
   subject: {

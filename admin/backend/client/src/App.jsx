@@ -9,6 +9,8 @@ import Attendance from "./components/Attendance";
 import Grades from "./components/Grades";
 import Announcements from "./components/Announcements";
 import TimeTable from "./components/Timetable";
+import AdminNav from "./components/admin/AdminNav";
+import AdminDashboard from "./components/admin/AdminDashboard";
 
 
 const DashboardLayout = () => {
@@ -16,6 +18,16 @@ const DashboardLayout = () => {
     <>
       {/* The Navbar is always visible for these routes */}
       <Navbar />
+      {/* The Outlet is where the child routes (subpages) will be rendered */}
+      <Outlet />
+    </>
+  );
+};
+const AdminDashboardLayout = () => {
+  return (
+    <>
+      {/* The Navbar is always visible for these routes */}
+      <AdminNav />
       {/* The Outlet is where the child routes (subpages) will be rendered */}
       <Outlet />
     </>
@@ -43,6 +55,13 @@ function App() {
               <Route path="grades" element={<Grades />} />
               <Route path="announcements" element={<Announcements />} />
               <Route path="timetable" element={<TimeTable />} />
+            </Route>
+
+            {/* Admin route with nested routes */}
+            <Route path="/admin" element={<AdminDashboardLayout />}>
+              {/* Default Dashboard content */}
+              <Route index element={<AdminDashboard />} />
+              {/* Sub-routes */}
             </Route>
           </Routes>
         </div>

@@ -5,7 +5,8 @@ const {
   getAttendanceByStudentId,
   updateAttendance,
   deleteAttendance,
-  getCourceAttendance
+  getCourceAttendance,
+  markAttendance
 } = require('../controllers/attendanceController');
 
 const router = express.Router();
@@ -17,4 +18,5 @@ router.get('/student/:studentId', getAttendanceByStudentId);
 router.put('/:id', updateAttendance);
 router.delete('/:id', deleteAttendance);
 router.get('/course/:course', getCourceAttendance);
+router.post("/:rollNo", markAttendance);
 module.exports = router;

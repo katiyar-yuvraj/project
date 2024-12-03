@@ -40,7 +40,7 @@ const StudentReg = () => {
 
     try {
       // Register the user
-      const userResponse = await fetch(`/api/user/register`, {
+      const userResponse = await fetch(`${import.meta.env.VITE_HOST_URL}/user/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, name, role: 'student' }),
@@ -54,7 +54,7 @@ const StudentReg = () => {
       const userData = await userResponse.json();
 
       // Register the student
-      const studentResponse = await fetch(`/api/student/`, {
+      const studentResponse = await fetch(`${import.meta.env.VITE_HOST_URL}/student/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
