@@ -1,37 +1,45 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import StudentContext from '../context/StudentContext';
 
 const Attendance = () => {
   const [attendanceData, setAttendanceData] = useState([]);
   const [attendancePercentage, setAttendancePercentage] = useState(0);
   const [loading, setLoading] = useState(true);
+  const { User } = useContext(StudentContext); // Getting User context
 
   useEffect(() => {
-    // Simulate fetching attendance data
+    // Function to fetch attendance data
     const fetchAttendanceData = async () => {
       try {
-        const data = await Promise.resolve([
-          { date: 'Oct 1, 2024', subject: 'Mathematics', status: 'Present' },
-          { date: 'Oct 2, 2024', subject: 'Science', status: 'Absent' },
-          { date: 'Oct 3, 2024', subject: 'English', status: 'Present' },
-          { date: 'Oct 4, 2024', subject: 'History', status: 'Present' },
-          { date: 'Oct 5, 2024', subject: 'Geography', status: 'Present' },
-        ]);
-        setAttendanceData(data);
+        // Fetch attendance data from the backend
+        const response = await fetch(`${import.meta.env.VITE_HOST_URL}/attendance/${User?.rollNumber}`);
+        const data = await response.json();
+        
+        // Check if the response contains attendance data
+        const attendance = data.attendance || []; // Fallback to empty array if no attendance found
+        
+        setAttendanceData(attendance);
 
         // Calculate attendance percentage
-        const totalClasses = data.length;
-        const presentClasses = data.filter(item => item.status === 'Present').length;
-        setAttendancePercentage(((presentClasses / totalClasses) * 100).toFixed(2));
+        const totalClasses = attendance.length;
+        const presentClasses = attendance.filter(item => item.status === 'Present').length;
+        const percentage = totalClasses ? ((presentClasses / totalClasses) * 100).toFixed(2) : 0;
+        setAttendancePercentage(percentage);
 
-        setLoading(false);
+        setLoading(false); // Set loading to false once data is fetched
       } catch (error) {
         console.error('Error fetching attendance data:', error);
-        setLoading(false);
+        setLoading(false); // Set loading to false on error
       }
     };
 
-    fetchAttendanceData();
-  }, []);
+    // Fetch attendance data on mount
+    if (User?.rollNumber) {
+      fetchAttendanceData();
+    } else {
+      setLoading(false); // If no roll number, stop loading
+    }
+  }, [User]);
 
   return (
     <div className="flex min-h-screen bg-gray-100">
@@ -79,15 +87,21 @@ const Attendance = () => {
                   <td colSpan="3" className="p-4 text-center text-gray-700">Loading attendance data...</td>
                 </tr>
               ) : (
-                attendanceData.map((item, index) => (
-                  <tr key={index} className="border-b">
-                    <td className="p-4 text-gray-700">{item.date}</td>
-                    <td className="p-4 text-gray-700">{item.subject}</td>
-                    <td className={`p-4 font-semibold ${item.status === 'Present' ? 'text-green-600' : 'text-red-600'}`}>
-                      {item.status}
-                    </td>
+                attendanceData.length === 0 ? (
+                  <tr>
+                    <td colSpan="3" className="p-4 text-center text-gray-700">No attendance data available.</td>
                   </tr>
-                ))
+                ) : (
+                  attendanceData.map((item, index) => (
+                    <tr key={index} className="border-b">
+                      <td className="p-4 text-gray-700">{item.date}</td>
+                      <td className="p-4 text-gray-700">{item.subject}</td>
+                      <td className={`p-4 font-semibold ${item.status === 'Present' ? 'text-green-600' : 'text-red-600'}`}>
+                        {item.status}
+                      </td>
+                    </tr>
+                  ))
+                )
               )}
             </tbody>
           </table>

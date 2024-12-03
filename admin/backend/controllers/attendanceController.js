@@ -117,3 +117,50 @@ exports.markAttendance = async (req, res) => {
     res.status(500).json({ message: "Failed to mark attendance.", error: error.message });
   }
 };
+
+const sampleAttendance = [
+  { date: 'Mon, Oct 1, 2024', subject: 'Mathematics', status: 'Present' },
+  { date: 'Tue, Oct 2, 2024', subject: 'Science', status: 'Absent' },
+  { date: 'Wed, Oct 3, 2024', subject: 'English', status: 'Present' },
+  { date: 'Thu, Oct 4, 2024', subject: 'History', status: 'Present' },
+  { date: 'Fri, Oct 5, 2024', subject: 'Geography', status: 'Present' }
+];
+
+exports.getAttendanceByRollNo = async (req, res) => {
+  const { rollNumber } = req.params;
+  
+  // If rollNumber is not provided, return the sample attendance data
+  if (!rollNumber) {
+    return res.status(200).json({ attendance: sampleAttendance });
+  }
+
+  try {
+    // Find the student by roll number
+    const student = await Student.findOne({ rollNumber });
+    
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+
+    // Fetch attendance records for the student
+    const attendanceRecords = await Attendance.find({ studentId: student._id }).populate('studentId', 'rollNumber subject');
+
+    // If no attendance data found
+    if (!attendanceRecords || attendanceRecords.length === 0) {
+      return res.status(404).json({ message: 'No attendance records found' });
+    }
+
+    // Format the attendance data for the response
+    const formattedAttendance = attendanceRecords.map(record => ({
+      date: record.date.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }),
+      subject: record.subject,
+      status: record.status === 'present' ? 'Present' : 'Absent',
+    }));
+
+    // Respond with the formatted attendance data
+    res.status(200).json({ attendance: formattedAttendance });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+}
