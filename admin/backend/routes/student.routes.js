@@ -8,7 +8,8 @@ const {
   getStudentByRoll,
   loginStudent,
   getStudentByUserId,
-  markGrade
+  markGrade,
+  getStudentGradeByRoll
 } = require('../controllers/studentController');
 
 const router = express.Router();
@@ -18,6 +19,7 @@ router.post('/', createStudent);
 router.get('/', getAllStudents);
 router.get('/:id', getStudentById);
 router.get('/roll/:id', getStudentByRoll);
+router.get("/grade/:rollNumber", getStudentGradeByRoll);
 router.put('/:id', updateStudent);
 router.delete('/:roll', deleteStudent);
 router.post('/login', loginStudent);

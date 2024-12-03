@@ -1,13 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 
 const TimeTable = () => {
-  const timeTableData = [
-    { day: "Monday", classes: ["Math (9:00 AM)", "Science (11:00 AM)", "English (2:00 PM)"] },
-    { day: "Tuesday", classes: ["History (10:00 AM)", "Physics (12:00 PM)", "PE (3:00 PM)"] },
-    { day: "Wednesday", classes: ["Biology (9:30 AM)", "Chemistry (11:30 AM)", "Arts (2:30 PM)"] },
-    { day: "Thursday", classes: ["Geography (10:00 AM)", "Economics (1:00 PM)", "Math (3:30 PM)"] },
-    { day: "Friday", classes: ["Computer Science (9:00 AM)", "Music (11:00 AM)", "English (2:00 PM)"] },
-  ];
+  const [timeTableData, setTimeTableData] = useState([]);
+
+  // Function to fetch timetable data
+  const getTimetable = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_HOST_URL}/timetable`);
+      const data = await response.json();
+      return data.timetable; // return the timetable data
+    } catch (error) {
+      console.error("Error fetching timetable:", error);
+      return [];
+    }
+  };
+
+  // Fetch timetable data when the component mounts
+  useEffect(() => {
+    const fetchData = async () => {
+      const timetable = await getTimetable();
+      setTimeTableData(timetable); // Set the timetable data in the state
+    };
+    fetchData(); // Call the async function to fetch data
+  }, []); // Empty dependency array to run only once on mount
 
   return (
     <div className="flex min-h-screen bg-gray-100">
@@ -28,7 +43,9 @@ const TimeTable = () => {
 
         {/* Timetable Section */}
         <section>
-          <h2 className="text-2xl font-bold text-blue-700 mb-6">Weekly Time Table</h2>
+          <h2 className="text-2xl font-bold text-blue-700 mb-6">
+            Weekly Time Table
+          </h2>
 
           {/* Timetable Table */}
           <table className="w-full border-collapse bg-white shadow rounded-lg">
@@ -41,9 +58,11 @@ const TimeTable = () => {
             <tbody>
               {timeTableData.map((daySchedule, index) => (
                 <tr key={index} className="border-b">
-                  <td className="p-4 text-gray-700 font-medium">{daySchedule.day}</td>
+                  <td className="p-4 text-gray-700 font-medium">
+                    {daySchedule?.day}
+                  </td>
                   <td className="p-4 text-gray-700">
-                    {daySchedule.classes.map((classItem, idx) => (
+                    {daySchedule?.classes?.map((classItem, idx) => (
                       <div key={idx} className="mb-2">
                         {classItem}
                       </div>

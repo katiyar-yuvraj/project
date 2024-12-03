@@ -203,3 +203,39 @@ exports.markGrade = async (req, res) => {
     res.status(500).json({ message: "Failed to mark grade.", error: error.message });
   }
 };
+
+// Helper function to calculate grade based on marks
+const calculateGrade = (marks) => {
+  if (marks >= 90) return { grade: 'A', gradeColor: 'text-green-600' };
+  if (marks >= 80) return { grade: 'B+', gradeColor: 'text-blue-600' };
+  if (marks >= 70) return { grade: 'B', gradeColor: 'text-yellow-600' };
+  if (marks >= 60) return { grade: 'C+', gradeColor: 'text-orange-600' };
+  if (marks >= 50) return { grade: 'C', gradeColor: 'text-red-600' };
+  return { grade: 'F', gradeColor: 'text-gray-600' };
+};
+
+exports.getStudentGradeByRoll = async (req, res) => {
+  try {
+    const { rollNumber } = req.params;
+
+    // Find the student by roll number
+    const student = await Student.findOne({ rollNumber });
+    
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+
+    // Map over the student's exams and calculate grades
+    const grades = student.exams.map((exam) => {
+      const { subject, marks } = exam;
+      const grade = calculateGrade(marks);
+      return { subject, grade: grade.grade, gradeColor: grade.gradeColor };
+    });
+
+    // Respond with the grades
+    res.json(grades);
+  } catch (error) {
+    console.error('Error fetching grades:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+}

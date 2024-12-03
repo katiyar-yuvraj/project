@@ -5,7 +5,10 @@ const attendanceSchema = new Schema({
   studentId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Student',
-    required: true,
+  },
+  studentRoll:{
+    type:String,
+    required:true
   },
   subjectId: String,
   date: {
@@ -20,7 +23,7 @@ const attendanceSchema = new Schema({
   },
   subject: {
     type: String,
-    enum: ["Mathematics", "English", "Chemisty", "Physics", "CSE"],
+    // enum: ["Mathematics", "English", "Chemisty", "Physics", "CSE"],
     required: true,
   }
 
