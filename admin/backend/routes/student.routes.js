@@ -18,7 +18,7 @@ router.get('/', getAllStudents);
 router.get('/:id', getStudentById);
 router.get('/roll/:id', getStudentByRoll);
 router.put('/:id', updateStudent);
-router.delete('/:id', deleteStudent);
+router.delete('/:roll', deleteStudent);
 router.post('/login', loginStudent);
 router.get("/info/:uid", getStudentByUserId);
 

@@ -129,7 +129,8 @@ exports.updateStudent = async (req, res) => {
 // Delete student by ID
 exports.deleteStudent = async (req, res) => {
   try {
-    const student = await Student.findByIdAndDelete(req.params.id);
+    const rollNumber = req.params.roll;
+    const student = await Student.findOneAndDelete({ rollNumber });
     if (!student) {
       return res.status(404).json({ message: "Student not found" });
     }
