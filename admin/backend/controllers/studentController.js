@@ -81,14 +81,26 @@ exports.getStudentByUserId = async (req, res) => {
 // Get student by roll number
 exports.getStudentByRoll = async (req, res) => {
   try {
-    const student = await Student.findOne(req.params.id).populate(
-      "userId",
-      "name email"
-    );
+    const { id: roll } = req.params;
+
+    // Query the database for the student
+    const student = await Student.findOne({ roll }).populate("userId", "name email");
+
     if (!student) {
       return res.status(404).json({ message: "Student not found" });
     }
-    res.status(200).json(student);
+
+    // Return the desired structure
+    const response = {
+      roll: student.roll,
+      name: student.userId?.name || "N/A", // In case userId is not populated
+      email: student.userId?.email || "N/A",
+      course: student.course || "N/A", // Assuming course is a field in the Student model
+      department: student.department || "N/A", // Assuming department is a field in the Student model
+      password: "dummyPassword", // Include only if needed; typically, passwords shouldn't be shared in responses
+    };
+
+    res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
