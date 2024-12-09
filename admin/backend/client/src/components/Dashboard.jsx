@@ -62,12 +62,16 @@ export default function Dashboard() {
             Welcome, <span className="text-blue-700">{User?.userId?.name || "UserName"}</span>
           </div>
           <div className="flex items-center space-x-4">
-            <img
-              src={User?.userId?.profileImg || "/vite.svg"}
+          {/* <img
+              src="profile.jpg"
               alt="Profile"
               className="w-10 h-10 rounded-full object-cover"
-            />
-            <span className="text-2xl cursor-pointer">🔔</span>
+            /> */}
+            <a
+              href="/dashboard/announcements"
+            >
+              <span className="text-2xl cursor-pointer text-gray-600">🔔</span>
+            </a>
           </div>
         </header>
 
