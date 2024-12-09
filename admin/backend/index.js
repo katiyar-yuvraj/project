@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const { userRoutes, studentRouter, attendanceRoutes } = require("./routes/index.js");
+const { userRoutes, studentRouter, attendanceRoutes, announcementRoutes, timetableRoutes } = require("./routes/index.js");
 
 const connect = require("./conf/db.js");
 
@@ -26,6 +26,8 @@ const PORT = process.env.APP_PORT || 3000;
 app.use("/user", userRoutes);
 app.use("/student", studentRouter);
 app.use("/attendance", attendanceRoutes);
+app.use("/announcement", announcementRoutes);
+app.use("/timetable", timetableRoutes);
 
 app.get("/", (req, res) => {
   res.status(200).send("Hello, welcome to my Express app!");

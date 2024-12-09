@@ -7,9 +7,10 @@ export default defineConfig({
   server:{
     proxy:{
       '/api': {
-        changeOrigin: true,             // For virtual hosted sites
-        rewrite: (path) => path.replace(/^\/api/, 'http://localhost:5000'), // Optional: rewrite API path
-      },
+      target: 'http://localhost:3000',
+      changeOrigin: true,
+      rewrite: path => path.replace(/^\/api/, '')
+    }
     }
   }
 })  
