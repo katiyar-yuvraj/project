@@ -19,13 +19,13 @@ const Announcements = () => {
         const data = await Promise.resolve([
           { 
             id: 1, 
-            title: 'New Assignment Due', 
+            title: 'Next Assignment Due', 
             message: `Your next assignment is due by ${getDateDaysAhead(15)}.`
           },
           { 
             id: 2, 
-            title: 'Class Canceled', 
-            message: `The class on ${getDateDaysAhead(20)} has been canceled.`
+            title: 'Class Cancelled', 
+            message: `The class on ${getDateDaysAhead(20)} has been cancelled.`
           }
         ]);
         
