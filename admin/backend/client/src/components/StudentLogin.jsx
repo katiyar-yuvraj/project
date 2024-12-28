@@ -8,7 +8,7 @@ const StudentLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const { setUser } = useContext(StudentContext);
+  const { setUser , User} = useContext(StudentContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -71,8 +71,9 @@ const StudentLogin = () => {
       }
       const data = await res.json();
 
-      setUser(data);
-      localStorage.setItem("user", JSON.stringify(data));
+      await setUser(data);
+      localStorage.setItem("userId", data?.userId?._id);
+      
       navigate("/dashboard");
     } catch (error) {
       console.log("unable to maintain context: ", error.message);

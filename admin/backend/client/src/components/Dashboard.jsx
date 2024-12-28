@@ -2,29 +2,29 @@ import React, { useState, useEffect, useContext } from "react";
 import StudentContext from "../context/StudentContext";
 
 export default function Dashboard() {
-  const { User, setUser } = useContext(StudentContext); 
+  const { User} = useContext(StudentContext); 
   const [attendance, setAttendance] = useState("Loading...");
   const [dashboardData, setDashboardData] = useState({
     classes: 0,
     assignments: 0,
     nextExam: "Not Scheduled",
   });
-
+  
   useEffect(() => {
     // Simulate fetching user and dashboard data
-    const fetchUserData = async () => {
-      try {
-        const userData = await Promise.resolve({
-          userId: {
-            name: "John Doe",
-            profileImg: "https://example.com/profile.jpg",
-          },
-        });
-        setUser(userData); // Update user context
-      } catch (error) {
-        console.error("Failed to fetch user data:", error);
-      }
-    };
+    // const fetchUserData = async () => {
+    //   try {
+    //     const userData = await Promise.resolve({
+    //       userId: {
+    //         name: "John Doe",
+    //         profileImg: "/vite.svg",
+    //       },
+    //     });
+    //     //(userData); // Update user context
+    //   } catch (error) {
+    //     console.error("Failed to fetch user data:", error);
+    //   }
+    // };
 
     const fetchDashboardData = async () => {
       try {
@@ -48,10 +48,10 @@ export default function Dashboard() {
       }
     };
 
-    fetchUserData();
+    // fetchUserData();
     fetchDashboardData();
     fetchAttendance();
-  }, [setUser]);
+  }, [User]);
 
   return (
     <div className="flex min-h-screen bg-gray-100">
@@ -59,7 +59,7 @@ export default function Dashboard() {
         {/* Header */}
         <header className="bg-white shadow rounded mb-6 flex justify-between items-center p-4">
           <div className="text-xl font-semibold">
-            Welcome, <span className="text-blue-700">{User?.userId?.name || "UserName"}</span>
+            Welcome, <span className="text-blue-700">{`${User?.userId?.name} (${User?.userId?.email})`  || "UserName"}</span>
           </div>
           <div className="flex items-center space-x-4">
             <img

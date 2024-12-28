@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes, Outlet } from "react-router-dom
 import Navbar from "./components/Navbar";
 import StudentLogin from "./components/StudentLogin";
 import StudentReg from "./components/StudentRegistration";
-import { StudentState } from "./context/StudentContext";
 import Dashboard from "./components/Dashboard";
 import Attendance from "./components/Attendance";
 import Grades from "./components/Grades";
@@ -36,7 +35,6 @@ const AdminDashboardLayout = () => {
 
 function App() {
   return (
-    <StudentState>
       <Router>
         <div className="mt-1">
           <Routes>
@@ -66,7 +64,6 @@ function App() {
           </Routes>
         </div>
       </Router>
-    </StudentState>
   );
 }
 
