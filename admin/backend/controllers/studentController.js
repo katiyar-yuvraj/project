@@ -145,7 +145,7 @@ exports.loginStudent = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("+password");
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -158,6 +158,7 @@ exports.loginStudent = async (req, res) => {
     } catch (error) {
       return res.status(401).json({ message: "Invalid credentials" , error: error.message});
     }
+    user.password = null 
     res.status(200).json({ message: "Login successful", user });
   } catch (error) {
     res.status(500).json({ error: error.message });
