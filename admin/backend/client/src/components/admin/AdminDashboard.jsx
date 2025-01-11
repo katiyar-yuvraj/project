@@ -2,15 +2,7 @@ import React, { useState, useEffect } from "react";
 
 const AdminDashboard = () => {
   const [visibleForm, setVisibleForm] = useState(null);
-  const [updateStudentData, setUpdateStudentData] = useState({
-    _id: null,
-    roll: "",
-    name: "",
-    email: "",
-    course: "",
-    department: "",
-    password: "",
-  });
+  const [updateStudentData, setUpdateStudentData] = useState({});
 
   const convertGradeToMarks = (grade) => {
     const gradeToMarks = {
@@ -38,7 +30,7 @@ const AdminDashboard = () => {
     setVisibleForm(action);
   };
 
-  const fetchDummyStudentData = async (roll) => {
+  const fetchStudentData = async (roll) => {
     try {
       const apiUrl = `${import.meta.env.VITE_HOST_URL}/student/roll/${roll}`;
       const res = await fetch(apiUrl);
@@ -48,16 +40,8 @@ const AdminDashboard = () => {
       }
       const data = await res.json();
 
-      const dummy = {
-        _id: data._id,
-        roll: roll,
-        name: "John Doe",
-        email: "johndoe@example.com",
-        course: "Btech",
-        department: "CSE",
-        password: "dummyPassword",
-      };
-      return { ...dummy, ...data };
+     console.log(data);
+      return data || {};
     } catch (error) {
       console.log(error);
     }
@@ -67,9 +51,10 @@ const AdminDashboard = () => {
     setRollNumber(e.target.value);
   };
 
+  // done
   const handleRollSubmit = async () => {
     if (rollNumber) {
-      const studentData = await fetchDummyStudentData(rollNumber);
+      const studentData = await fetchStudentData(rollNumber);
       setUpdateStudentData(studentData);
       showStudentAction("updateStudentForm");
     }
@@ -79,16 +64,15 @@ const AdminDashboard = () => {
     const { name, value } = e.target;
     setUpdateStudentData((prev) => ({ ...prev, [name]: value }));
   };
+
   // done
   const handelmarkAttendence = async () => {
     if (rollNumber) {
       // Extract form values
-      const rollNo = rollNumber;
-      const name = document.getElementById("attendanceName")?.value;
-      const department = document.getElementById("attendanceDepartment")?.value;
-      const date = document.getElementById("attendanceDate")?.value;
-      const subjectId = document.getElementById("attendanceSubject1")?.value;
-      const status = document.getElementById("attendeResult")?.value;
+      const { userId: { name }, course: department } = updateStudentData;
+      const date = document.getElementById("attendanceDate").value;
+      const status = document.getElementById("attendeResult").value;
+      const subjectId = document.getElementById("attendanceSubject1").value;
 
       // Validate required fields
       if (!name || !department || !date || !subjectId || !status) {
@@ -106,7 +90,7 @@ const AdminDashboard = () => {
       try {
         // Send request to the API
         const response = await fetch(
-          `${import.meta.env.VITE_HOST_URL}/attendance/${rollNo}`,
+          `${import.meta.env.VITE_HOST_URL}/attendance/${rollNumber}`,
           {
             method: "POST",
             headers: {
@@ -115,7 +99,7 @@ const AdminDashboard = () => {
             body: JSON.stringify(requestBody),
           }
         );
-
+        console.log("Response:", response);
         // Handle the response
         if (response.ok) {
           const data = await response.json();
@@ -197,7 +181,7 @@ const AdminDashboard = () => {
     if (rollNumber) {
       try {
         const studentData = await fetch(
-          `${import.meta.env.VITE_HOST_URL}/student/${updateStudentData?._id}`,
+          `${import.meta.env.VITE_HOST_URL}/student`,
           {
             method: "PUT",
             headers: {
@@ -302,6 +286,7 @@ const AdminDashboard = () => {
                 <input
                   type="text"
                   id="attendanceName"
+                  value={updateStudentData?.userId?.name}
                   required
                   className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
                   placeholder="Student Name"
@@ -319,6 +304,7 @@ const AdminDashboard = () => {
                   type="text"
                   id="attendanceDepartment"
                   required
+                  value={updateStudentData?.course}
                   className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
                   placeholder="Department Name"
                 />
@@ -406,6 +392,7 @@ const AdminDashboard = () => {
                   type="text"
                   id="gradaeName"
                   required
+                  value={updateStudentData?.userId?.name}
                   className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
                   placeholder="Student Name"
                 />
@@ -422,6 +409,7 @@ const AdminDashboard = () => {
                   type="text"
                   id="gradaeDepartment"
                   required
+                  value={updateStudentData?.course}
                   className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
                   placeholder="Department Name"
                 />
@@ -501,9 +489,8 @@ const AdminDashboard = () => {
                   type="text"
                   id="updateStudentRoll"
                   name="roll"
-                  value={updateStudentData?.roll }
-                  onChange={handleInputChange}
-                  required
+                  value={updateStudentData?.rollNumber }
+                  readOnly
                   className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-500"
                 />
               </div>
@@ -518,7 +505,7 @@ const AdminDashboard = () => {
                   type="text"
                   id="updateStudentName"
                   name="name"
-                  value={updateStudentData?.name}
+                  value={updateStudentData?.userId?.name}
                   onChange={handleInputChange}
                   className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-500"
                 />
@@ -534,8 +521,8 @@ const AdminDashboard = () => {
                   type="email"
                   id="updateStudentEmail"
                   name="email"
-                  value={updateStudentData?.email}
-                  onChange={handleInputChange}
+                  value={updateStudentData?.userId?.email}
+                  readOnly
                   className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-500"
                 />
               </div>
@@ -551,7 +538,7 @@ const AdminDashboard = () => {
                   type="text"
                   id="updateStudentDept"
                   name="department"
-                  value={updateStudentData?.department}
+                  value={updateStudentData?.course}
                   onChange={handleInputChange}
                   className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-yellow-500"
                 />

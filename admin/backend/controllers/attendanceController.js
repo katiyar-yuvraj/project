@@ -95,7 +95,7 @@ exports.getCourceAttendance = async (req, res) => {
 exports.markAttendance = async (req, res) => {
   const { rollNo } = req.params;
   const { subjectId, date, status } = req.body;
-
+  
   // Validate request body
   if (!subjectId || !date || !status) {
     return res.status(400).json({ message: "Subject ID, date, and status are required." });
@@ -104,14 +104,15 @@ exports.markAttendance = async (req, res) => {
   try {
     // Save attendance record
     const attendance = new Attendance({
-      rollNo,
-      subjectId,
+      studentRoll: rollNo,
+      subject: subjectId,
       date: new Date(date),
       status,
     });
 
     await attendance.save();
-
+   
+    
     res.status(201).json({ message: "Attendance marked successfully.", attendance });
   } catch (error) {
     res.status(500).json({ message: "Failed to mark attendance.", error: error.message });

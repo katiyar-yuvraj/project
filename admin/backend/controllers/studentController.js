@@ -81,26 +81,18 @@ exports.getStudentByUserId = async (req, res) => {
 // Get student by roll number
 exports.getStudentByRoll = async (req, res) => {
   try {
-    const { id: roll } = req.params;
+    const { id: rollNumber } = req.params;
 
     // Query the database for the student
-    const student = await Student.findOne({ roll }).populate("userId", "name email");
-
+    const student = await Student.findOne({ rollNumber }).populate("userId", "name email");
+    
     if (!student) {
       return res.status(404).json({ message: "Student not found" });
     }
 
     // Return the desired structure
-    const response = {
-      roll: student.roll,
-      name: student.userId?.name || "N/A", // In case userId is not populated
-      email: student.userId?.email || "N/A",
-      course: student.course || "N/A", // Assuming course is a field in the Student model
-      department: student.department || "N/A", // Assuming department is a field in the Student model
-      password: "dummyPassword", // Include only if needed; typically, passwords shouldn't be shared in responses
-    };
-
-    res.status(200).json(response);
+   
+    res.status(200).json(student);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -108,12 +100,18 @@ exports.getStudentByRoll = async (req, res) => {
 
 // Update student by ID
 exports.updateStudent = async (req, res) => {
-  try {
-    const { rollNumber, class: studentClass, exams } = await req.body;
-
+  try { 
+    const {
+      _id,
+      rollNumber,
+      class: studentClass,
+      exams,
+      userId: { name, email }, // Nested destructuring for `userId`
+    } = req.body;
+    
     const student = await Student.findByIdAndUpdate(
-      req.params.id,
-      { rollNumber, class: studentClass, exams },
+      _id,
+      { rollNumber, class: studentClass, exams , name, email},
       { new: true, runValidators: true }
     );
 
