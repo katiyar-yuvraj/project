@@ -6,7 +6,9 @@ const TimeTable = () => {
   // Function to fetch timetable data
   const getTimetable = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_HOST_URL}/timetable`);
+      const response = await fetch(
+        `${import.meta.env.VITE_HOST_URL}/timetable`
+      );
       const data = await response.json();
       return data.timetable; // return the timetable data
     } catch (error) {
@@ -32,12 +34,16 @@ const TimeTable = () => {
         <header className="bg-white shadow rounded mb-6 flex justify-between items-center p-4">
           <div className="text-xl font-semibold text-gray-800">Time Table</div>
           <div className="flex items-center space-x-4">
-            <img
+            {/* <img
               src="profile.jpg"
               alt="Profile"
               className="w-10 h-10 rounded-full object-cover"
-            />
-            <span className="text-2xl cursor-pointer text-gray-600">🔔</span>
+            /> */}
+            <a
+              href="/dashboard/announcements"
+            >
+              <span className="text-2xl cursor-pointer text-gray-600">🔔</span>
+            </a>
           </div>
         </header>
 

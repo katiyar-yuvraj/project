@@ -49,12 +49,16 @@ const Attendance = () => {
         <header className="bg-white shadow rounded mb-6 flex justify-between items-center p-4">
           <div className="text-xl font-semibold text-gray-800">Attendance</div>
           <div className="flex items-center space-x-4">
-            <img
+          {/* <img
               src="profile.jpg"
               alt="Profile"
               className="w-10 h-10 rounded-full object-cover"
-            />
-            <span className="text-2xl cursor-pointer text-gray-600">🔔</span>
+            /> */}
+            <a
+              href="/dashboard/announcements"
+            >
+              <span className="text-2xl cursor-pointer text-gray-600">🔔</span>
+            </a>
           </div>
         </header>
 

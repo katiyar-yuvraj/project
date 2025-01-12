@@ -16,10 +16,19 @@ const Announcements = () => {
     const fetchAnnouncements = async () => {
       try {
         // Simulate fetching data from an API or database
-        const data = await fetch(
-          `${import.meta.env.VITE_HOST_URL}/announcement`
-        ).then((res) => res.json());
-
+        const data = await Promise.resolve([
+          { 
+            id: 1, 
+            title: 'New Assignment Due', 
+            message: `Your next assignment is due by ${getDateDaysAhead(15)}.`
+          },
+          { 
+            id: 2, 
+            title: 'Class Canceled', 
+            message: `The class on ${getDateDaysAhead(20)} has been canceled.`
+          }
+        ]);
+        
         setAnnouncements(data);
         setLoading(false);
       } catch (error) {
@@ -41,12 +50,16 @@ const Announcements = () => {
             Announcements
           </div>
           <div className="flex items-center space-x-4">
-            <img
+          {/* <img
               src="profile.jpg"
               alt="Profile"
               className="w-10 h-10 rounded-full object-cover"
-            />
-            <span className="text-2xl cursor-pointer text-gray-600">🔔</span>
+            /> */}
+            <a
+              href="/dashboard/announcements"
+            >
+              <span className="text-2xl cursor-pointer text-gray-600">🔔</span>
+            </a>
           </div>
         </header>
 
