@@ -57,8 +57,7 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
   }
 };
 
-// Ensure email is indexed for faster lookups
-userSchema.index({ email: 1 });
+
 
 const User = mongoose.model("User", userSchema);
 

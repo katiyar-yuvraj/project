@@ -20,7 +20,7 @@ router.get('/', getAllStudents);
 router.get('/:id', getStudentById);
 router.get('/roll/:id', getStudentByRoll);
 router.get("/grade/:rollNumber", getStudentGradeByRoll);
-router.put('/:id', updateStudent);
+router.put('/', updateStudent);
 router.delete('/:roll', deleteStudent);
 router.post('/login', loginStudent);
 router.get("/info/:uid", getStudentByUserId);
